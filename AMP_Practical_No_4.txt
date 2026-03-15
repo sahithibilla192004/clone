@@ -1,0 +1,199 @@
+Practical No. 4
+Aim: Programming UI Elements (TextView, EditText, Button, ImageButton,
+      CheckBox, RadioGroup, RadioButton, ToggleButton).
+
+Note: Also referenced as 3.A — Demonstrate the working of different views
+      (TextView, EditText, Button, ImageButton, ToggleButton,
+       RadioGroup, RadioButton, CheckBox).
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtName"
+            android:hint="Enter Name"
+            android:textSize="20dp"/>
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rg">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbFemale"
+                android:text="Female"
+                android:textSize="20dp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbMale"
+                android:text="Male"
+                android:textSize="20dp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbOther"
+                android:text="Other"
+                android:textSize="20dp"/>
+
+        </RadioGroup>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chbDance"
+            android:text="Dancing"
+            android:textSize="20dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chbSing"
+            android:text="Singing"
+            android:textSize="20dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chbRead"
+            android:text="Reading"
+            android:textSize="20dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnOk"
+            android:text="OK"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvName"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvGender"
+            android:textSize="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvHobbies"
+            android:textSize="20dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgBtn"
+            android:src="@mipmap/ic_launcher_round"/>
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tg"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+</ScrollView>
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.lifecycle
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.widget.*
+
+class MainActivity : AppCompatActivity() {
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val edtName  = findViewById<EditText>(R.id.edtName)
+        val rg       = findViewById<RadioGroup>(R.id.rg)
+        val rbMale   = findViewById<RadioButton>(R.id.rbMale)
+        val rbFemale = findViewById<RadioButton>(R.id.rbFemale)
+        val rbOther  = findViewById<RadioButton>(R.id.rbOther)
+        val chbDance = findViewById<CheckBox>(R.id.chbDance)
+        val chbSing  = findViewById<CheckBox>(R.id.chbSing)
+        val chbRead  = findViewById<CheckBox>(R.id.chbRead)
+        val btnOk    = findViewById<Button>(R.id.btnOk)
+        val tvName   = findViewById<TextView>(R.id.tvName)
+        val tvGender = findViewById<TextView>(R.id.tvGender)
+        val tvHobbies= findViewById<TextView>(R.id.tvHobbies)
+        val imgBtn   = findViewById<ImageButton>(R.id.imgBtn)
+        val tg       = findViewById<ToggleButton>(R.id.tg)
+
+        var s = ""
+
+        btnOk.setOnClickListener {
+            tvName.text = edtName.text
+
+            if (rbMale.isChecked)
+                tvGender.text = rbMale.text
+            else if (rbFemale.isChecked)
+                tvGender.text = rbFemale.text
+            else
+                tvGender.text = rbOther.text
+
+            if (chbDance.isChecked)
+                s = chbDance.text as String
+            if (chbSing.isChecked)
+                s = s + " " + chbSing.text as String
+            if (chbRead.isChecked)
+                s = s + " " + chbRead.text as String
+
+            tvHobbies.text = s
+        }
+
+        imgBtn.setOnClickListener {
+            edtName.setText("")
+            rbMale.isChecked   = false
+            rbFemale.isChecked = false
+            rbOther.isChecked  = false
+            chbDance.isChecked = false
+            chbSing.isChecked  = false
+            chbRead.isChecked  = false
+            tvName.setText("")
+            tvGender.setText("")
+            tvHobbies.setText("")
+        }
+
+        tg.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(this, "Toggle Button is ON", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Toggle Button is OFF", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+}
+

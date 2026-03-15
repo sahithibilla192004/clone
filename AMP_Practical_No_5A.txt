@@ -1,0 +1,235 @@
+Practical No. 5A
+Aim: Programs on Menus and Adapters. (Spinner, ListView, Menu)
+
+Note: Also referenced as 3.B — Demonstrate the working of different views
+      (Spinner, ListView, Menu).
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Spinner Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSpinner"
+        android:text="Spinner"
+        android:textSize="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner1"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/tvSpinner"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner2"
+        android:layout_toRightOf="@+id/spinner1"
+        android:layout_below="@id/tvSpinner"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_click"
+        android:text="Click Here"
+        android:layout_below="@id/spinner1"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSpinnerOutput"
+        android:layout_below="@id/btn_click"
+        android:textSize="20dp"/>
+
+    <!-- ListView Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvListView"
+        android:text="ListView"
+        android:textSize="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvSpinnerOutput"
+        android:layout_marginTop="30dp"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/tvListView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvListViewOutput"
+        android:layout_below="@id/listView"
+        android:textSize="20dp"/>
+
+    <!-- Menu Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvMenu"
+        android:text="Menu"
+        android:textSize="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvListViewOutput"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvMenuOutput"
+        android:layout_below="@id/tvMenu"
+        android:textSize="20dp"/>
+
+</RelativeLayout>
+
+========================================
+FILE: strings.xml
+----------------------------------------
+
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string-array name="country_name">
+        <item>India</item>
+        <item>South Afrcia</item>
+        <item>Brazil</item>
+        <item>New Zealand</item>
+        <item>Australia</item>
+    </string-array>
+</resources>
+
+========================================
+FILE: res/menu/mymenu.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bm"
+        android:title="Bookmarks"/>
+
+    <item
+        android:id="@+id/sr"
+        android:title="Search"/>
+
+    <item
+        android:id="@+id/sa"
+        android:title="Save"/>
+
+    <item
+        android:id="@+id/sh"
+        android:title="Share"/>
+
+    <item
+        android:id="@+id/dlt"
+        android:title="Delete"/>
+
+</menu>
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.lifecycle
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
+
+class MainActivity : AppCompatActivity() {
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val sp1              = findViewById<Spinner>(R.id.spinner1)
+        val sp2              = findViewById<Spinner>(R.id.spinner2)
+        val btnClick         = findViewById<Button>(R.id.btn_click)
+        val tvSpinnerOutput  = findViewById<TextView>(R.id.tvSpinnerOutput)
+        val lv               = findViewById<ListView>(R.id.listView)
+        val tvListViewOutput = findViewById<TextView>(R.id.tvListViewOutput)
+
+        // Spinner 1 data - programmatic list
+        val lst = ArrayList<String>()
+        lst.add("ABC")
+        lst.add("PQR")
+        lst.add("XYZ")
+
+        // Spinner 2 data - from strings.xml array
+        val os = arrayOf<String>("Windows", "IOS", "Linux", "Android")
+
+        // Adapter for Spinner 1
+        val adp1 = ArrayAdapter(this, android.R.layout.simple_spinner_item, lst)
+        adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sp1.adapter = adp1
+
+        // Adapter for Spinner 2
+        val adp2 = ArrayAdapter.createFromResource(
+            this,
+            R.array.country_name,
+            android.R.layout.simple_spinner_item
+        )
+        adp2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sp2.adapter = adp2
+
+        // Adapter for ListView
+        val adp3 = ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, os)
+        lv.adapter = adp3
+
+        // Button click - show selected spinner values
+        btnClick.setOnClickListener {
+            val str1 = sp1.selectedItem.toString()
+            val str2 = sp2.selectedItem.toString()
+            tvSpinnerOutput.text = "Data from Spinner1 = $str1 \nData from Spinner2 = $str2"
+        }
+
+        // ListView item click - show selected item
+        lv.setOnItemClickListener { adapterView, view, i, l ->
+            val str3 = adapterView.getItemAtPosition(i) as String
+            tvListViewOutput.text = "Data from ListView = $str3"
+        }
+    }
+
+    // Inflate the options menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.mymenu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    // Handle menu item selections
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val tvMenuOutput = findViewById<TextView>(R.id.tvMenuOutput)
+        when (item.itemId) {
+            R.id.bm  -> tvMenuOutput.text = "Bookmarks Selected"
+            R.id.sr  -> tvMenuOutput.text = "Search Selected"
+            R.id.sa  -> tvMenuOutput.text = "Save Selected"
+            R.id.sh  -> tvMenuOutput.text = "Share Selected"
+            R.id.dlt -> tvMenuOutput.text = "Delete Selected"
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}
+

@@ -1,0 +1,110 @@
+================================================================
+PRACTICAL NO. 1
+Aim: Write an Android Program to demonstrate the working of
+     Color, Style, Strings & Drawables.
+     Android Resources: (Color, Theme, String, Drawable, Dimension, Image)
+================================================================
+
+----------------------------------------------------------------
+FILE 1: strings.xml
+----------------------------------------------------------------
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="Heading">Hello World</string>
+    <string name="Description">This is string.xml and here we can create new strings
+    which can be used in our application</string>
+</resources>
+
+
+----------------------------------------------------------------
+FILE 2: colors.xml
+----------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorBlue">#0000FF</color>
+</resources>
+
+
+----------------------------------------------------------------
+FILE 3: themes.xml
+----------------------------------------------------------------
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AMDPracs1"
+        parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="android:background">#00F0EF</item>
+        <item name="android:textColor">#000000</item>
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+    <style name="Theme.AMDPracs1" parent="Base.Theme.AMDPracs1" />
+</resources>
+
+
+----------------------------------------------------------------
+FILE 4: activity_main.xml
+----------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorRed"
+            android:text="This is color Red"
+            android:textColor="@color/colorBlue"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is color blue"
+            android:textSize="25dp"
+            android:textColor="@color/colorRed"
+            android:background="@color/colorBlue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Heading"
+            android:textSize="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Description"
+            android:textSize="25dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/triangle"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rectangle"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/circle"/>
+
+    </LinearLayout>
+
+</ScrollView>
+
+

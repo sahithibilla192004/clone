@@ -1,0 +1,227 @@
+Practical No. 5B
+Aim: Programs on Dialogs. (DatePicker Dialog, TimePicker Dialog, AlertDialog).
+
+Note: Also referenced as 3.C — Demonstrate the working of different views
+      (DatePicker Dialog, TimePicker Dialog, Alert Dialog).
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- DatePicker Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="DatePicker Dialog"
+        android:textSize="20dp"/>
+
+    <Button
+        android:id="@+id/btnPickDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv1"
+        android:layout_marginTop="10dp"
+        android:text="Pick Date"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnPickDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
+
+    <!-- TimePicker Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvDate"
+        android:layout_marginTop="50dp"
+        android:text="TimePicker Dialog"
+        android:textSize="20dp"/>
+
+    <Button
+        android:id="@+id/btnPickTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv2"
+        android:layout_marginTop="10dp"
+        android:text="Pick Time"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnPickTime"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
+
+    <!-- Alert Dialog Section -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv3"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvTime"
+        android:layout_marginTop="50dp"
+        android:text="Alert Dialog"
+        android:textSize="20dp"/>
+
+    <Button
+        android:id="@+id/btnClickMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv3"
+        android:layout_marginTop="10dp"
+        android:text="Show Alert Dialog Window"/>
+
+    <TextView
+        android:id="@+id/tvAlertDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnClickMe"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="20dp"/>
+
+</RelativeLayout>
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.myapplication
+
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.icu.text.DateFormat
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.text.format.DateFormat.is24HourFormat
+import android.widget.*
+import java.util.Calendar
+
+@SuppressLint("MissingInflatedId")
+class MainActivity : AppCompatActivity(),
+    DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
+
+    lateinit var btnPickDate: Button
+    lateinit var tvDate: TextView
+    lateinit var btnPickTime: Button
+    lateinit var tvTime: TextView
+    lateinit var btnClickMe: Button
+    lateinit var tvAlertDialog: TextView
+
+    var day: Int    = 0
+    var month: Int  = 0
+    var year: Int   = 0
+    var hour: Int   = 0
+    var minute: Int = 0
+
+    var myDay: Int    = 0
+    var myMonth: Int  = 0
+    var myYear: Int   = 0
+    var myHour: Int   = 0
+    var myMinute: Int = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        btnPickDate   = findViewById(R.id.btnPickDate)
+        tvDate        = findViewById(R.id.tvDate)
+        btnPickTime   = findViewById(R.id.btnPickTime)
+        tvTime        = findViewById(R.id.tvTime)
+        btnClickMe    = findViewById(R.id.btnClickMe)
+        tvAlertDialog = findViewById(R.id.tvAlertDialog)
+
+        // DatePicker Dialog button
+        btnPickDate.setOnClickListener {
+            val calender = Calendar.getInstance()
+            day   = calender.get(Calendar.DAY_OF_MONTH)
+            month = calender.get(Calendar.MONTH)
+            year  = calender.get(Calendar.YEAR)
+
+            val datePickerDialog = DatePickerDialog(
+                this@MainActivity,
+                this@MainActivity,
+                year, month, day
+            )
+            datePickerDialog.show()
+        }
+
+        // TimePicker Dialog button
+        btnPickTime.setOnClickListener {
+            val calender = Calendar.getInstance()
+            hour   = calender.get(Calendar.HOUR)
+            minute = calender.get(Calendar.MINUTE)
+
+            val timePickerDialog = TimePickerDialog(
+                this@MainActivity,
+                this@MainActivity,
+                hour, minute, true
+            )
+            timePickerDialog.show()
+        }
+
+        // Alert Dialog button
+        btnClickMe.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Dialog Box")
+            builder.setMessage("Deleting File may harm your system")
+            builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+            builder.setPositiveButton("Yes") { dialogInterface, which ->
+                tvAlertDialog.text = "Clicked Yes"
+            }
+            builder.setNegativeButton("No") { dialogInterface, which ->
+                tvAlertDialog.text = "Clicked No"
+            }
+            builder.setNeutralButton("Cancel") { dialogInterface, which ->
+                tvAlertDialog.text = "Clicked Cancel\nOperation Cancelled"
+            }
+
+            val alertDialog: AlertDialog = builder.create()
+            alertDialog.setCancelable(false)
+            alertDialog.show()
+        }
+    }
+
+    // Callback when date is selected
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        myYear  = p1
+        myMonth = p2 + 1     // Calendar.MONTH is 0-based, so +1
+        myDay   = p3
+        tvDate.text = "Year: " + myYear + "\n" +
+                      "Month: " + myMonth + "\n" +
+                      "Day: " + myDay
+    }
+
+    // Callback when time is selected
+    override fun onTimeSet(p0: TimePicker?, p1: Int, p2: Int) {
+        myHour   = p1
+        myMinute = p2
+        tvTime.text = "Hour: " + myHour + "\n" +
+                      "Minute: " + myMinute
+    }
+}
+

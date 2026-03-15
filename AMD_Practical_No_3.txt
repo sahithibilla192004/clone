@@ -1,0 +1,280 @@
+Practical No. 3
+Aim: Programs related to different Layouts.
+
+========================================
+FILE: activity_main.xml
+(Linear Layout - Horizontal, default orientation)
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn2"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn3"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn4"/>
+
+</LinearLayout>
+
+========================================
+FILE: activity_main2.xml
+(Linear Layout - Vertical orientation)
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn2"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn3"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="btn4"/>
+
+</LinearLayout>
+
+========================================
+FILE: activity_main3.xml
+(Relative Layout)
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn1"
+        android:text="btn1"
+        android:textSize="25dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn2"
+        android:text="btn2"
+        android:textSize="25dp"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn3"
+        android:text="btn3"
+        android:textSize="25dp"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn4"
+        android:text="btn4"
+        android:textSize="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn5"
+        android:text="btn5"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn6"
+        android:text="btn6"
+        android:textSize="25dp"
+        android:layout_centerVertical="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn7"
+        android:text="btn7"
+        android:textSize="25dp"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn8"
+        android:text="btn8"
+        android:textSize="25dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn9"
+        android:text="btn9"
+        android:textSize="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn10"
+        android:text="10"
+        android:textSize="25dp"
+        android:layout_toLeftOf="@id/btn4"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn11"
+        android:text="11"
+        android:textSize="25dp"
+        android:layout_toRightOf="@id/btn7"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn12"
+        android:text="12"
+        android:layout_below="@id/btn5"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn13"
+        android:text="13"
+        android:textSize="25dp"
+        android:layout_toLeftOf="@id/btn7"
+        android:layout_above="@id/btn7"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn14"
+        android:text="14"
+        android:textSize="25dp"
+        android:layout_toLeftOf="@id/btn2"
+        android:layout_below="@id/btn2"/>
+
+</RelativeLayout>
+
+========================================
+FILE: activity_main4.xml
+(Menu screen to navigate between layouts)
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnHorizontal"
+        android:text="Linear Layout Horizontal"
+        android:textSize="25dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnVertical"
+        android:text="Linear Layout Vertical"
+        android:textSize="25dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnRelative"
+        android:text="Relatice Layout"
+        android:textSize="25dp"/>
+
+</LinearLayout>
+
+========================================
+FILE: MainActivity4.kt
+----------------------------------------
+
+package com.example.amdpracs1
+
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity4 : AppCompatActivity() {
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main4)
+
+        val btnLV = findViewById<Button>(R.id.btnVertical)
+        val btnLH = findViewById<Button>(R.id.btnHorizontal)
+        val btnR  = findViewById<Button>(R.id.btnRelative)
+
+        btnLV.setOnClickListener {
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+        }
+
+        btnLH.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnR.setOnClickListener {
+            val intent = Intent(this, MainActivity3::class.java)
+            startActivity(intent)
+        }
+    }
+}
+

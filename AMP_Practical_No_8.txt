@@ -1,0 +1,211 @@
+Practical No. 8
+Aim: SQLite Database.
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/edtEnterName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:hint="Enter Name"
+        android:layout_centerHorizontal="true"/>
+
+    <EditText
+        android:id="@+id/edtEnterAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:hint="Enter Age"
+        android:layout_below="@id/edtEnterName"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btnAddName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Add Name and Age"
+        android:textSize="20dp"
+        android:layout_below="@id/edtEnterAge"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btnPrintName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Print Name and Age"
+        android:textSize="20dp"
+        android:layout_below="@id/btnAddName"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="20dp"
+        android:layout_below="@id/btnPrintName"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_below="@id/tvName"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
+
+========================================
+FILE: DBHelper.kt
+----------------------------------------
+
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
+class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
+    SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
+
+    // Called when the database is created for the first time
+    override fun onCreate(db: SQLiteDatabase) {
+        val createTableQuery = """
+            CREATE TABLE $TABLE_NAME (
+                $ID_COL   INTEGER PRIMARY KEY AUTOINCREMENT,
+                $NAME_COL TEXT,
+                $AGE_COL  TEXT
+            )
+        """.trimIndent()
+        db.execSQL(createTableQuery)
+    }
+
+    // Called when the database needs to be upgraded
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
+        onCreate(db)
+    }
+
+    // Inserts a new record into the database
+    fun addName(name: String, age: String) {
+        val values = ContentValues().apply {
+            put(NAME_COL, name)
+            put(AGE_COL, age)
+        }
+        writableDatabase.use { db ->
+            db.insert(TABLE_NAME, null, values)
+        }
+    }
+
+    // Retrieves all records from the database
+    fun getName(): Cursor {
+        return readableDatabase.rawQuery("SELECT * FROM $TABLE_NAME", null)
+    }
+
+    companion object {
+        private const val DATABASE_NAME    = "ANDROID"
+        private const val DATABASE_VERSION = 1
+        const val TABLE_NAME               = "android_table"
+        const val ID_COL                   = "id"
+        const val NAME_COL                 = "name"
+        const val AGE_COL                  = "age"
+    }
+}
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.myapplication
+
+import DBHelper
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var addName:   Button
+    private lateinit var printName: Button
+    private lateinit var enterName: EditText
+    private lateinit var enterAge:  EditText
+    private lateinit var name:      TextView
+    private lateinit var age:       TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Initialize UI components
+        addName   = findViewById(R.id.btnAddName)
+        printName = findViewById(R.id.btnPrintName)
+        enterName = findViewById(R.id.edtEnterName)
+        enterAge  = findViewById(R.id.edtEnterAge)
+        name      = findViewById(R.id.tvName)
+        age       = findViewById(R.id.tvAge)
+
+        // Create database helper instance
+        val db = DBHelper(this, null)
+
+        // Add data to database on button click
+        addName.setOnClickListener {
+            val inputName = enterName.text.toString().trim()
+            val inputAge  = enterAge.text.toString().trim()
+
+            if (inputName.isEmpty() || inputAge.isEmpty()) {
+                // Show message if fields are empty
+                Toast.makeText(this, "Please enter both name and age",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                // Add name and age to database
+                db.addName(inputName, inputAge)
+                Toast.makeText(this, "$inputName added to database",
+                    Toast.LENGTH_LONG).show()
+
+                // Clear input fields
+                enterName.text.clear()
+                enterAge.text.clear()
+            }
+        }
+
+        // Retrieve and display data from database on button click
+        printName.setOnClickListener {
+            name.text = ""
+            age.text  = ""
+
+            val cursor = db.getName()
+            cursor.use {
+                if (cursor.moveToFirst()) {
+                    do {
+                        val personName = cursor.getString(
+                            cursor.getColumnIndexOrThrow(DBHelper.NAME_COL)
+                        )
+                        val personAge = cursor.getString(
+                            cursor.getColumnIndexOrThrow(DBHelper.AGE_COL)
+                        )
+                        // Append data to text views
+                        name.append("$personName\n")
+                        age.append("$personAge\n")
+                    } while (cursor.moveToNext())
+                }
+            }
+        }
+    }
+}
+

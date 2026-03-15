@@ -1,0 +1,86 @@
+Practical No. 9
+Aim: Programming threads, handles and asynchronized programs.
+      (Using Kotlin Coroutines)
+
+Note: Also referenced as 7 — Demonstrate the working of Color, Style,
+      Strings & Drawables. / Programming threads, handles and
+      asynchronized programs.
+
+========================================
+FILE: build.gradle.kts (Module: app)
+(Add this to the dependencies block)
+----------------------------------------
+
+dependencies {
+    // ... existing dependencies ...
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+}
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Result will appear here"
+        android:textSize="25sp"/>
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Start"/>
+
+</LinearLayout>
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.test
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import kotlinx.coroutines.*
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var resultTextView: TextView
+    private lateinit var startButton: Button
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        resultTextView = findViewById(R.id.tvResult)
+        startButton    = findViewById(R.id.btnStart)
+
+        startButton.setOnClickListener {
+            // Launch a coroutine on the Main (UI) thread
+            CoroutineScope(Dispatchers.Main).launch {
+                resultTextView.text = "Processing..."
+
+                val result = withContext(Dispatchers.IO) {
+                    // Background task simulation
+                    delay(3000)
+                    "Task Completed"
+                }
+
+                resultTextView.text = result  // Update UI after background work
+            }
+        }
+    }
+}

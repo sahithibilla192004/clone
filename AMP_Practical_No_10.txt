@@ -1,0 +1,103 @@
+Practical No. 10
+Aim: Programming with Multi-Media.
+      (Audio Playback using MediaPlayer)
+
+Note: Also referenced as 7 — Demonstrate the working of Color, Style,
+      Strings & Drawables. / Programming with Multi-Media.
+
+========================================
+FILE: activity_main.xml
+----------------------------------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play"/>
+
+    <Button
+        android:id="@+id/btnPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pause"/>
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"/>
+
+</LinearLayout>
+
+========================================
+FILE: MainActivity.kt
+----------------------------------------
+
+package com.example.test
+
+import android.media.MediaPlayer
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+
+class MainActivity : AppCompatActivity() {
+
+    private var mediaPlayer: MediaPlayer? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val playButton:  Button = findViewById(R.id.btnPlay)
+        val pauseButton: Button = findViewById(R.id.btnPause)
+        val stopButton:  Button = findViewById(R.id.btnStop)
+
+        // Initialize the MediaPlayer
+        // MediaPlayer.create handles the prepare() step for local raw resources
+        mediaPlayer = MediaPlayer.create(this, R.raw.sound_file)
+
+        playButton.setOnClickListener {
+            // Start playback from the current position
+            mediaPlayer?.start()
+        }
+
+        pauseButton.setOnClickListener {
+            // Pause playback
+            mediaPlayer?.pause()
+        }
+
+        stopButton.setOnClickListener {
+            // Stop and release the MediaPlayer object, then re-initialize for next play
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer.create(this, R.raw.sound_file)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Release the media player resources when the activity is destroyed
+        mediaPlayer?.release()
+    }
+}
+
+========================================
+NOTE: Required resource file
+----------------------------------------
+
+Place your audio file in:
+  res/raw/sound_file.mp3   (or .wav / .ogg)
+
+If the res/raw/ folder does not exist, create it manually:
+  Right-click res --> New --> Android Resource Directory --> raw
+
